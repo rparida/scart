@@ -3,11 +3,11 @@ define([
   'underscore',
   'backbone',
   'localstorage',
-  'models/cartModel'
-], function($, _, Backbone, localstorage, Item){
+  'models/productsModel'
+], function($, _, Backbone, localstorage, Product){
 	
-	var CartCollection = Backbone.Collection.extend({
-		model: Item,
+	var CartProductCollection = Backbone.Collection.extend({
+		model: Product,
 		localStorage: new Backbone.LocalStorage("cartSession"),
 		getById: function(id){
        		return this.filter(function(val) {
@@ -30,7 +30,7 @@ define([
 			//if item already added, then on next time increase the qty. 
 			if(typeof itemModel !== 'undefined'){
 				
-				var index = this.indexOf(cartCollection.get(parseInt(id)));
+				var index = this.indexOf(cartProductCollection.get(parseInt(id)));
 				
 				var qty = this.models[index].get("quantity");
 				this.models[index].set({"quantity" : parseInt(qty)+1});  // update the quatity 
@@ -63,9 +63,10 @@ define([
 				}
 	    },
 	    //Update item quantity in the cart
-	    updateItem : function(id, qty, obj){
+	    updateItem : function(selEl, qty, obj){
 				
-				var itemModel = cartCollection.findWhere({ "id": parseInt(id) });
+	    		var id = $(selEl).attr("id").substr(4);
+				var itemModel = cartProductCollection.findWhere({ "id": parseInt(id) });
   				itemModel.save(
   							{ "quantity": qty,
   								"total" : (qty * itemModel.get("price"))
@@ -93,7 +94,7 @@ define([
     //end	
 });
 	
-	var cartCollection = new CartCollection();	
-	return cartCollection;
+	var cartProductCollection = new CartProductCollection();	
+	return cartProductCollection;
     
 });

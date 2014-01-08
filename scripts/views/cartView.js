@@ -17,35 +17,36 @@ define([
 					'blur input[type=\"text\"][id^=\"Qty_\"]': 'updCart'						
 			},
 			render: function(){
+				var totalPrice = 0;
+				
 				if(this.collection.length > 0){
-						$(this.el).find("tr:gt(0)").remove();
-						var totalPrice = 0;
+						$(this.el).find("tbody").contents().remove();
 							this.collection.each(function(model){
 								
 								totalPrice = totalPrice + this.collection.getTotalprice(model); 
 								
 								var cartemplate = this.cart_items_template(model.toJSON());
-								$(this.el).find("tbody:last").append(cartemplate);
+								$(this.el).find("tbody").append(cartemplate);
 								
 						}, this);
 						
 						var tottemplate = this.cart_tot_template({"total" : totalPrice.toFixed(2)});
-						$(this.el).find("tbody:last").append(tottemplate);
+						$(this.el).find("tbody").append(tottemplate);
 									
 				}
 									
 			},
 			updCart : function(e){
        				var selEl = $(e.currentTarget);
-  					var id = selEl.attr("id").substr(4);
-  					var qty = $("#"+selEl.attr("id")).val();
+  					var qty = $(selEl).val();
+  					
   				
 	  				if(isNaN(qty)){
 	  					
 	  					alert("Please enter valid quantity ");
 	  					return;
 	  				}
-       				this.collection.updateItem(id, qty, this );
+       				this.collection.updateItem(selEl, qty, this );
        				
        			},
 				complete : function(){

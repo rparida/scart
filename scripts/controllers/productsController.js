@@ -3,7 +3,7 @@ define([
   'underscore',
   'backbone', 
   'views/productsView',
-   'services/productsService'
+   'collections/productsCatalog'
 ], function($, _, Backbone, ProductView, prdCollection){
 	
 	var Router = Backbone.Router.extend({

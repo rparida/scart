@@ -3,9 +3,9 @@ define([
   'underscore',
   'backbone',
   'views/cartView',
-  'services/cartService', 
-  'services/productsService'
-  ], function($, _, Backbone, CartView, cartCollection, prdCollection){
+  'collections/cartProductCollection', 
+  'collections/productsCatalog'
+  ], function($, _, Backbone, CartView, cartProductCollection, prdCollection){
 	
 	var Router = Backbone.Router.extend({
 	routes: {
@@ -22,28 +22,28 @@ define([
 	app_router.on('route:addCart', function(id) {
 			prdCollection.fetch({ success : function(model){
 				var selItem = model.get(id);
-				cartCollection.addItem(selItem);
-				var cartView = new CartView({collection: cartCollection});						
+				cartProductCollection.addItem(selItem);
+				var cartView = new CartView({collection: cartProductCollection});						
 			}});
 	});	 
 	
 	//For viewing cart
 	app_router.on('route:showCart', function() {
-			cartCollection.syncCollection();
-			var cartView = new CartView({collection: cartCollection});
+			cartProductCollection.syncCollection();
+			var cartView = new CartView({collection: cartProductCollection});
 	});
 	
 	//For deleting items from cart
 	app_router.on('route:delCart', function(id) {
-			cartCollection.removeItem(id);
-			var cartView = new CartView({collection: cartCollection });
+			cartProductCollection.removeItem(id);
+			var cartView = new CartView({collection: cartProductCollection });
 					
 	});	
 	
 	//For clearing all items from cart
 	app_router.on('route:clear', function() {		
-			cartCollection.clearCart();
-            var cartView = new CartView({collection: cartCollection});
+			cartProductCollection.clearCart();
+            var cartView = new CartView({collection: cartProductCollection});
 	});	
 	
 	if (Backbone.History) {
